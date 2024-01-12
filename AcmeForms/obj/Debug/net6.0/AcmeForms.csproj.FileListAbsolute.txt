@@ -66,3 +66,4 @@ C:\Users\Salazar\source\repos\AcmeForms\AcmeForms\obj\Debug\net6.0\refint\AcmeFo
 C:\Users\Salazar\source\repos\AcmeForms\AcmeForms\obj\Debug\net6.0\AcmeForms.pdb
 C:\Users\Salazar\source\repos\AcmeForms\AcmeForms\obj\Debug\net6.0\AcmeForms.genruntimeconfig.cache
 C:\Users\Salazar\source\repos\AcmeForms\AcmeForms\obj\Debug\net6.0\ref\AcmeForms.dll
+C:\Users\Salazar\source\repos\AcmeForms\AcmeForms\obj\Debug\net6.0\AcmeForms.sourcelink.json

@@ -59,5 +59,76 @@ namespace AcmeForms.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message, response = user });
             }
         }
+
+        //Create
+        [HttpPost]
+        [Route("create")]
+        public IActionResult Create([FromBody] User objeto)
+        {
+            try
+            {
+                _dbcontext.Users.Add(objeto);
+                _dbcontext.SaveChanges();
+
+                return StatusCode(StatusCodes.Status200OK, new { message = "ok" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status200OK, new { message = ex.Message });
+            }
+        }
+
+        //Edit
+        [HttpPut]
+        [Route("edit")]
+        public IActionResult Edit([FromBody] User objeto)
+        {
+            User user = _dbcontext.Users.Find(objeto.UserId);
+            if (user == null)
+            {
+                return BadRequest("Usuario no encontrado");
+            }
+            try
+            {
+                user.FullName = objeto.FullName is null ? user.FullName : objeto.FullName;
+                user.User1 = objeto.User1 is null ? user.User1 : objeto.User1;
+                user.Password = objeto.Password is null ? user.Password : objeto.Password;
+
+                _dbcontext.Users.Update(user);
+                _dbcontext.SaveChanges();
+
+                return StatusCode(StatusCodes.Status200OK, new { message = "ok" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status200OK, new { message = ex.Message });
+            }
+        }
+
+        //Delete
+        [HttpDelete]
+        [Route("delete/{idUser:int}")]
+        public IActionResult DeleteForm(int idUser)
+        {
+            User user = _dbcontext.Users.Find(idUser);
+            if (user == null)
+            {
+                return BadRequest("Usuario no encontrado");
+            }
+            try
+            {
+
+                _dbcontext.Users.Remove(user);
+                _dbcontext.SaveChanges();
+
+                return StatusCode(StatusCodes.Status200OK, new { message = "ok" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status200OK, new { message = ex.Message });
+            }
+        }
+
+
     }
 }

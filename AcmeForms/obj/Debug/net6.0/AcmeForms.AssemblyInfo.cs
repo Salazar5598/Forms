@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AcmeForms")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+98ec06a848a050eb7146cf2a635db65ca02eccb7")]
 [assembly: System.Reflection.AssemblyProductAttribute("AcmeForms")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AcmeForms")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using Microsoft.EntityFrameworkCore;
 using AcmeForms.Models;
+using Microsoft.VisualBasic.FileIO;
 
 
 namespace AcmeForms.Controllers
@@ -98,6 +99,8 @@ namespace AcmeForms.Controllers
                 form.Link = objeto.Link is null ? form.Link : objeto.Link;      
                 form.UserId = objeto.UserId is null ? form.UserId : objeto.UserId;
               
+                _dbcontext.Forms.Update(form);
+                _dbcontext.SaveChanges();
 
                 return StatusCode(StatusCodes.Status200OK, new { message = "ok" });
             }
@@ -107,6 +110,29 @@ namespace AcmeForms.Controllers
             }
         }
 
+        //Delete
+        [HttpDelete]
+        [Route("delete/{idForm:int}")]
+        public IActionResult DeleteForm(int idForm)
+        {
+            Form form = _dbcontext.Forms.Find(idForm);
+            if (form == null)
+            {
+                return BadRequest("Formulario no encontrado");
+            }
+            try
+            {
+        
+                _dbcontext.Forms.Remove(form);
+                _dbcontext.SaveChanges();
+
+                return StatusCode(StatusCodes.Status200OK, new { message = "ok" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status200OK, new { message = ex.Message });
+            }
+        }
 
         //CRUD Field
         //List
@@ -153,6 +179,76 @@ namespace AcmeForms.Controllers
             }
         }
 
+        //Create
+        [HttpPost]
+        [Route("field/create")]
+        public IActionResult CreateFIeld([FromBody] Field objeto)
+        {
+            try
+            {
+                _dbcontext.Fields.Add(objeto);
+                _dbcontext.SaveChanges();
+
+                return StatusCode(StatusCodes.Status200OK, new { message = "ok" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status200OK, new { message = ex.Message });
+            }
+        }
+
+        //Edit
+        [HttpPut]
+        [Route("field/edit")]
+        public IActionResult EditFields([FromBody] Field objeto)
+        {
+            Field field = _dbcontext.Fields.Find(objeto.FieldId);
+            if (field == null)
+            {
+                return BadRequest("Campo no encontrado");
+            }
+            try
+            {
+                field.Name = objeto.Name is null ? field.Name : objeto.Name;
+                field.Title = objeto.Title is null ? field.Title : objeto.Title;
+                field.Required = objeto.Required is null ? field.Required : objeto.Required;
+                field.FormId = objeto.FormId is null ? field.FormId : objeto.FormId;
+                field.TypeId = objeto.TypeId is null ? field.TypeId : objeto.TypeId;
+                _dbcontext.Fields.Update(field);
+                _dbcontext.SaveChanges();
+
+                return StatusCode(StatusCodes.Status200OK, new { message = "ok" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status200OK, new { message = ex.Message });
+            }
+        }
+
+        //Delete
+        [HttpDelete]
+        [Route("field/delete/{idField:int}")]
+        public IActionResult DeleteField(int idField)
+        {
+            Field field = _dbcontext.Fields.Find(idField);
+            if (field == null)
+            {
+                return BadRequest("Campo no encontrado");
+            }
+            try
+            {
+
+                _dbcontext.Fields.Remove(field);
+                _dbcontext.SaveChanges();
+
+                return StatusCode(StatusCodes.Status200OK, new { message = "ok" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status200OK, new { message = ex.Message });
+            }
+        }
+
 
 
 
@@ -186,7 +282,7 @@ namespace AcmeForms.Controllers
             FieldsType fieldtype = _dbcontext.FieldsTypes.Find(idFieldtype);
             if (fieldtype == null)
             {
-                return BadRequest("Campo no encotrado");
+                return BadRequest("Tipo de Campo no encotrado");
             }
 
             try
@@ -199,6 +295,73 @@ namespace AcmeForms.Controllers
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message, response = fieldtype });
+            }
+        }
+
+        //Create
+        [HttpPost]
+        [Route("field/type/create")]
+        public IActionResult CreateFieldType([FromBody] FieldsType objeto)
+        {
+            try
+            {
+                _dbcontext.FieldsTypes.Add(objeto);
+                _dbcontext.SaveChanges();
+
+                return StatusCode(StatusCodes.Status200OK, new { message = "ok" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status200OK, new { message = ex.Message });
+            }
+        }
+
+        //Edit
+        [HttpPut]
+        [Route("field/type/edit")]
+        public IActionResult EditFieldType([FromBody] FieldsType objeto)
+        {
+            FieldsType type = _dbcontext.FieldsTypes.Find(objeto.TypeId);
+            if (type == null)
+            {
+                return BadRequest("Tipo de Campo no encontrado");
+            }
+            try
+            {
+                type.Name = objeto.Name is null ? type.Name : objeto.Name;
+
+                _dbcontext.FieldsTypes.Update(type);
+                _dbcontext.SaveChanges();
+
+                return StatusCode(StatusCodes.Status200OK, new { message = "ok" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status200OK, new { message = ex.Message });
+            }
+        }
+
+        //Delete
+        [HttpDelete]
+        [Route("field/type/delete/{idType:int}")]
+        public IActionResult DeleteFieldType(int idType)
+        {
+            FieldsType field = _dbcontext.FieldsTypes.Find(idType);
+            if (field == null)
+            {
+                return BadRequest("Tipo de Campo no encontrado");
+            }
+            try
+            {
+
+                _dbcontext.FieldsTypes.Remove(field);
+                _dbcontext.SaveChanges();
+
+                return StatusCode(StatusCodes.Status200OK, new { message = "ok" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status200OK, new { message = ex.Message });
             }
         }
 
