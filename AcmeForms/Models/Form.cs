@@ -19,7 +19,6 @@ namespace AcmeForms.Models
 
         public virtual User? oUser { get; set; }
 
-        [JsonIgnore]
         public virtual ICollection<Field> Fields { get; set; }
     }
 }

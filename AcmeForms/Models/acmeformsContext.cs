@@ -35,7 +35,6 @@ namespace AcmeForms.Models
                 entity.HasIndex(e => e.TypeId, "IX_Relationship4");
 
                 entity.Property(e => e.FieldId)
-                    .ValueGeneratedNever()
                     .HasColumnName("Field_id");
 
                 entity.Property(e => e.FormId).HasColumnName("Form_id");
@@ -68,7 +67,6 @@ namespace AcmeForms.Models
                 entity.ToTable("Fields_Type");
 
                 entity.Property(e => e.TypeId)
-                    .ValueGeneratedNever()
                     .HasColumnName("Type_id");
 
                 entity.Property(e => e.Name)
@@ -83,7 +81,6 @@ namespace AcmeForms.Models
                 entity.HasIndex(e => e.UserId, "IX_Relationship3");
 
                 entity.Property(e => e.FormId)
-                    .ValueGeneratedNever()
                     .HasColumnName("Form_id");
 
                 entity.Property(e => e.Description)
@@ -104,6 +101,7 @@ namespace AcmeForms.Models
                     .WithMany(p => p.Forms)
                     .HasForeignKey(d => d.UserId)
                     .HasConstraintName("Relationship3");
+
             });
 
             modelBuilder.Entity<User>(entity =>
@@ -111,7 +109,6 @@ namespace AcmeForms.Models
                 entity.ToTable("User");
 
                 entity.Property(e => e.UserId)
-                    .ValueGeneratedNever()
                     .HasColumnName("User_id");
 
                 entity.Property(e => e.FullName)

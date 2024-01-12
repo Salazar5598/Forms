@@ -4,11 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 
 using Microsoft.EntityFrameworkCore;
 using AcmeForms.Models;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace AcmeForms.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class UserController : ControllerBase
     {

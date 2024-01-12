@@ -5,15 +5,20 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AcmeForms.Models;
 using Microsoft.VisualBasic.FileIO;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Data.SqlClient.Server;
 
 
 namespace AcmeForms.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class FormController : ControllerBase
     {
+
         public readonly acmeformsContext _dbcontext;
+        private string _localhostUrl;
 
         public FormController(acmeformsContext _context)
         {
@@ -29,7 +34,7 @@ namespace AcmeForms.Controllers
 
             try
             {
-                forms = _dbcontext.Forms.Include(c => c.oUser).ToList();
+                forms = _dbcontext.Forms.Include(c => c.oUser).Include(p => p.Fields).ToList();
 
                 return StatusCode(StatusCodes.Status200OK, new { message = "ok", response = forms });
 
@@ -71,10 +76,25 @@ namespace AcmeForms.Controllers
         {
             try
             {
-                _dbcontext.Forms.Add(objeto);
+                var httpContext = HttpContext;
+                var host = httpContext.Request.Host;
+                int numeroAleatorio = new Random().Next(1000, 10000);
+                _localhostUrl = $"{httpContext.Request.Scheme}://{host}/{(objeto.Name?.Trim() ?? "").Replace(" ", "-")}/{objeto.UserId}/{numeroAleatorio}";
+
+                var form = new Form
+                {
+                    Name = objeto.Name,
+                    Description = objeto.Description,
+                    Link = _localhostUrl,
+                    UserId = objeto.UserId,
+                };
+
+                _dbcontext.Forms.Add(form);
                 _dbcontext.SaveChanges();
+
                 
-                return StatusCode(StatusCodes.Status200OK, new { message = "ok" });
+
+                return StatusCode(StatusCodes.Status200OK, new { message = "Perfecto! Ahora puedes ver tu formulario en el siguiente enlace: "+_localhostUrl });
             }
             catch (Exception ex)
             {
